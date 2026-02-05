@@ -49,7 +49,6 @@ class TuyaIasGasLEL(IasZone, TuyaLocalCluster):
     TuyaQuirkBuilder("_TZE200_hr0tdd47", "TS0601")
     .applies_to("_TZE200_rjxqso4a", "TS0601")
     .applies_to("_TZE284_rjxqso4a", "TS0601")
-    .applies_to("_TZE204_iuk8kupi", "TS0601")
     .tuya_gas(dp_id=1)
     .tuya_sensor(
         dp_id=2,
@@ -126,7 +125,6 @@ tuya_gas_alarm_base = (
     .applies_to("_TZE204_zougpkpy", "TS0601")
     .applies_to("_TZE204_chbyv06x", "TS0601")
     .applies_to("_TZE204_yojqa8xn", "TS0601")
-    .applies_to("_TZE204_iuk8kupi", "TS0601")
     .tuya_sensor(
         dp_id=2,
         attribute_name="lower_explosive_limit",
@@ -168,7 +166,75 @@ tuya_gas_alarm_base = (
 
 
 (
-    tuya_gas_alarm_base.clone()  # 1, 8, 9, and 16 from base
+    tuya_gas_alarm_base.clone()  # 1, 2, 6, 7, 8, 9, 10 and 16 from base
+    .applies_to("_TZE204_iuk8kupi", "TS0601")
+    .tuya_sensor(
+        dp_id=2,
+        attribute_name="lower_explosive_limit",
+        type=t.int16s,
+        divisor=10,
+        state_class=SensorStateClass.MEASUREMENT,
+        unit="%LEL",  # Not present in zigpy
+        translation_key="lower_explosive_limit",
+        fallback_name="% Lower explosive limit",
+    )
+    .tuya_sensor(
+        dp_id=2,
+        attribute_name="co",
+        type=t.int16s,
+        device_class=SensorDeviceClass.CO,
+        state_class=SensorStateClass.MEASUREMENT,
+        unit=CONCENTRATION_PARTS_PER_MILLION,
+        fallback_name="CO concentration",
+    )
+    .tuya_enum(
+        dp_id=6,
+        attribute_name="alarm_ringtone",
+        enum_class=TuyaSirenRingtone,
+        translation_key="alarm_ringtone",
+        fallback_name="Alarm ringtone",
+    )
+    .tuya_number(
+        dp_id=7,
+        attribute_name="alarm_duration",
+        min_value=1,
+        type=t.uint16_t,
+        max_value=180,
+        step=1,
+        unit=UnitOfTime.SECONDS,
+        translation_key="alarm_duration",
+        fallback_name="Alarm duration",
+    )
+    .tuya_enum(
+        dp_id=9,
+        attribute_name="self_test_result",
+        enum_class=TuyaSelfTestResult,
+        entity_type=EntityType.DIAGNOSTIC,
+        entity_platform=EntityPlatform.SENSOR,
+        translation_key="self_test_result",
+        fallback_name="Self test result",
+    )
+    .tuya_binary_sensor(
+        dp_id=10,
+        attribute_name="preheat_active",
+        entity_type=EntityType.STANDARD,
+        translation_key="preheat_active",
+        fallback_name="Preheat active",
+    )
+    .tuya_battery(dp_id=15, battery_type=BatterySize.AA, battery_qty=2)
+    .tuya_switch(
+        dp_id=16,
+        attribute_name="mute_siren",
+        entity_type=EntityType.STANDARD,
+        translation_key="mute_siren",
+        fallback_name="Mute siren",
+    )
+    # 13 ignored in z2m
+    .add_to_registry()
+)
+
+(
+    tuya_gas_alarm_base.clone()  # 11 from base
     .applies_to("_TZE200_ggev5fsl", "TS0601")
     .applies_to("_TZE200_u319yc66", "TS0601")
     .applies_to("_TZE200_kvpwq8z7", "TS0601")
