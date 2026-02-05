@@ -49,6 +49,7 @@ class TuyaIasGasLEL(IasZone, TuyaLocalCluster):
     TuyaQuirkBuilder("_TZE200_hr0tdd47", "TS0601")
     .applies_to("_TZE200_rjxqso4a", "TS0601")
     .applies_to("_TZE284_rjxqso4a", "TS0601")
+    .applies_to("_TZE204_iuk8kupi", "TS0601")
     .tuya_gas(dp_id=1)
     .tuya_sensor(
         dp_id=2,
@@ -125,6 +126,7 @@ tuya_gas_alarm_base = (
     .applies_to("_TZE204_zougpkpy", "TS0601")
     .applies_to("_TZE204_chbyv06x", "TS0601")
     .applies_to("_TZE204_yojqa8xn", "TS0601")
+    .applies_to("_TZE204_iuk8kupi", "TS0601")
     .tuya_sensor(
         dp_id=2,
         attribute_name="lower_explosive_limit",
